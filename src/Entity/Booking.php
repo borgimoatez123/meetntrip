@@ -439,6 +439,7 @@ class Booking
         return $this;
     }
 
+
     public function removePaiement(Paiement $paiement): self
     {
         if ($this->paiements->removeElement($paiement)) {
