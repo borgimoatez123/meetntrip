@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Confirmation{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h1 class="h3 mb-0">Booking Confirmed!</h1>
+        </div>
+        <div class="card-body">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+            <div class="text-center mb-4">
+                <i class="fas fa-check-circle fa-5x text-success mb-3"></i>
+                <h2>Thank you for your booking</h2>
+                <p class="lead">Your booking ID is: <strong>{{ booking.bookingId }}</strong></p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5">Booking Details</h3>
+                    <ul class="list-unstyled">
+                        <li><strong>Booking Date:</strong> {{ booking.bookingDate|date('Y-m-d') }}</li>
+                        <li><strong>Status:</strong> {{ booking.status }}</li>
+                        <li><strong>Total Price:</strong> ${{ booking.priceTotal }}</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h3 class="h5">Event Information</h3>
+                    <ul class="list-unstyled">
+                        <li><strong>Event Name:</strong> {{ booking.nameEvement }}</li>
+                        <li><strong>Start Date:</strong> {{ booking.startEvement|date('Y-m-d H:i') }}</li>
+                        <li><strong>End Date:</strong> {{ booking.endEvement|date('Y-m-d H:i') }}</li>
+                        <li><strong>Number of Invitees:</strong> {{ booking.numberofInvites }}</li>
+                    </ul>
+                </div>
+            </div>
+            
+            {% if booking.specialRequests %}
+            <div class="row mt-3">
+                <div class="col-12">
+                    <h3 class="h5">Special Requests</h3>
+                    <div class="card">
+                        <div class="card-body bg-light">
+                            {{ booking.specialRequests }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="mt-4 text-center">
+                <a href="{{ path('app_homepage') }}" class="btn btn-primary">Return to Homepage</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

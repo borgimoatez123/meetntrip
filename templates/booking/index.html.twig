@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Complete Your Booking{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Complete Your Booking</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2>Booking Summary</h2>
+            </div>
+            <div class="card-body">
+                {% if flight %}
+                    <div class="mb-3">
+                        <h3>Flight Details</h3>
+                        <p><strong>Airline:</strong> {{ flight.airline }}</p> {# Changed from airlines to airline #}
+                        <p><strong>Destination:</strong> {{ flight.destination }}</p>
+                        <p><strong>Departure:</strong> {{ flight.departureTime ? flight.departureTime|date('H:i') : 'N/A' }}</p>
+                        <p><strong>Return:</strong> {{ flight.backTime ? flight.backTime|date('H:i') : 'N/A' }}</p>
+                        <p><strong>Price:</strong> ${{ flight.price|number_format(2) }}</p>
+                    </div>
+                {% endif %}
+
+                {% if hotel %}
+                    <div class="mb-3">
+                        <h3>Hotel Details</h3>
+                        <p><strong>Name:</strong> {{ hotel.name }}</p>
+                        <p><strong>Location:</strong> {{ hotel.location }}</p>
+                        <p><strong>Price per night:</strong> ${{ hotel.pricePerNight|number_format(2) }}</p>
+                        <p><strong>Rating:</strong> {{ hotel.rating }}/5</p>
+                    </div>
+                {% endif %}
+
+                {% if transport %}
+                    <div class="mb-3">
+                        <h3>Transport Details</h3>
+                        <p><strong>Type:</strong> {{ transport.type }}</p>
+                        <p><strong>Description:</strong> {{ transport.description }}</p>
+                        <p><strong>Price:</strong> ${{ transport.price|number_format(2) }}</p>
+                    </div>
+                {% endif %}
+
+                {% if conferenceLocation %}
+                    <div class="mb-3">
+                        <h3>Conference Location</h3>
+                        <p><strong>Name:</strong> {{ conferenceLocation.name }}</p>
+                        <p><strong>Price per day:</strong> ${{ conferenceLocation.pricePerDay|number_format(2) }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="alert alert-info">
+                    <h4>Total Price: ${{ price_total|number_format(2) }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2>Finalize Booking</h2>
+            </div>
+            <div class="card-body">
+                <form action="{{ path('app_booking_save') }}" method="post">
+                    {# Hidden fields to pass all selection data #}
+                    <input type="hidden" name="flight_id" value="{{ flight_id }}">
+                    <input type="hidden" name="hotel_id" value="{{ hotel_id }}">
+                    <input type="hidden" name="transport_id" value="{{ transport_id }}">
+                    <input type="hidden" name="location_id" value="{{ location_id }}">
+                    <input type="hidden" name="userid" value="{{ userid }}">
+                    <input type="hidden" name="id_evenement" value="{{ id_evenement }}">
+                    <input type="hidden" name="date_debut" value="{{ date_debut }}">
+                    <input type="hidden" name="date_fin" value="{{ date_fin }}">
+                    <input type="hidden" name="nombre_invite" value="{{ nombre_invite }}">
+
+                    <div class="form-group mb-3">
+                        <label for="special_requests">Special Requests</label>
+                        <textarea class="form-control" id="special_requests" name="special_requests" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the terms and conditions
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-check-circle"></i> Confirm Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

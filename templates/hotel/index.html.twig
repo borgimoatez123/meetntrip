@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hotels List{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Available Hotels</h1>
+    <p><strong>City:</strong> {{ city }}</p>
+    <p><strong>Event Dates:</strong> {{ date_debut }} to {{ date_fin }}</p>
+    <p><strong>Number of Guests:</strong> {{ nombre_invite }}</p>
+    <p><strong>User ID:</strong> {{ userid }}</p>
+    <p><strong>Flight Details:</strong></p>
+    <ul>
+        <li><strong>Flight ID:</strong> {{ flight_id }}</li>
+        <li><strong>Departure Time:</strong> {{ departure_time }}</li>
+        <li><strong>Return Time:</strong> {{ back_time }}</li>
+        <li><strong>Flight Price:</strong> ${{ flight_price|number_format(2) }}</li>
+    </ul>
+
+    <div class="row">
+        {% for hotel in hotels %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ hotel.name }}</h5>
+                        <p class="card-text">
+                            <strong>Location:</strong> {{ hotel.location }}<br>
+                            <strong>Price per Night:</strong> ${{ hotel.pricePerNight|number_format(2) }}<br>
+                            <strong>Rating:</strong> {{ hotel.rating }}/5<br>
+                            <strong>Description:</strong> {{ hotel.description }}
+                        </p>
+                        <a href="{{ path('app_hotel_select', {
+                            'hotel_id': hotel.hotelId,
+                            'flight_id': flight_id,
+                            'departure_time': departure_time,
+                            'back_time': back_time,
+                            'flight_price': flight_price,
+                            'userid': userid,
+                            'id_evenement': id_evenement,
+                            'date_debut': date_debut,
+                            'date_fin': date_fin,
+                            'city': city,
+                            'nombre_invite': nombre_invite
+                        }) }}" class="btn btn-primary">Select</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No hotels available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
