@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pending Bookings Review{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Pending Bookings Review</h1>
+            <a href="{{ path('admin_bookings_list') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </a>
+        </div>
+        
+        {# Single flash message display with dismiss option #}
+        {% for message in app.flashes('success')|slice(0, 1) %}
+            <div class="alert alert-success alert-dismissible fade show mb-4">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        
+        {% for message in app.flashes('warning')|slice(0, 1) %}
+            <div class="alert alert-warning alert-dismissible fade show mb-4">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User</th>
+                                <th>Event</th>
+                                <th>Booking Date</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                {% if booking.status is null %}
+                                    <tr>
+                                        <td>{{ booking.userName ?? booking.user.nom }}</td>
+                                        <td>{{ booking.nameEvement }}</td>
+                                        <td>{{ booking.bookingDate|date('Y-m-d') }}</td>
+                                        <td>
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-clock"></i> Pending
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ path('admin_booking_show', {'id': booking.bookingId}) }}" 
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Review booking">
+                                                <i class="bi bi-eye"></i> Review
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="bi bi-check-circle" style="font-size: 2rem;"></i>
+                                            <p class="mt-2 mb-0">All bookings have been processed</p>
+                                            <small>No pending bookings found</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

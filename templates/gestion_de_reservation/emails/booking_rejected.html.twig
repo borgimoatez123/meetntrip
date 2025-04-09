@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Rejected</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f44336; color: white; padding: 10px; text-align: center; }
+        .content { padding: 20px; }
+        .footer { margin-top: 20px; font-size: 0.8em; text-align: center; color: #777; }
+        .booking-details { margin-top: 20px; }
+        .detail-row { margin-bottom: 10px; }
+        .detail-label { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Booking Rejected</h1>
+        </div>
+        
+        <div class="content">
+            <p>Dear {{ user.nom }},</p>
+            <p>We regret to inform you that your booking could not be confirmed.</p>
+            
+            <div class="booking-details">
+                <h2>Booking Details</h2>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Event:</span> {{ booking.nameEvement }}
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Booking ID:</span> {{ booking.bookingId }}
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Dates:</span> 
+                    {{ booking.startEvement|date('F j, Y') }} to {{ booking.endEvement|date('F j, Y') }}
+                </div>
+                
+                <p>We apologize for any inconvenience this may cause. If you believe this is an error or would like to discuss alternative options, please contact our support team.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated message. Please do not reply directly to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Booking Details - {{ booking.nameEvement }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Booking Details</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>{{ booking.nameEvement }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>User Information</h4>
+                        <p><strong>Name:</strong> {{ booking.userName ?? booking.user.nom }}</p>
+                        <p><strong>Email:</strong> {{ booking.user.email }}</p>
+                        <p><strong>Phone:</strong> {{ booking.user.telephone }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Booking Details</h4>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-{{ booking.status == 'confirmed' ? 'success' : (booking.status == 'not_confirmed' ? 'danger' : 'warning') }}">
+                                {{ booking.status }}
+                            </span>
+                        </p>
+                        <p><strong>Booking Date:</strong> {{ booking.bookingDate|date('Y-m-d') }}</p>
+                        <p><strong>Event Dates:</strong> 
+                            {{ booking.startEvement|date('Y-m-d') }} to {{ booking.endEvement|date('Y-m-d') }}
+                        </p>
+                        <p><strong>Number of Invites:</strong> {{ booking.numberofInvites }}</p>
+                    </div>
+                </div>
+                
+                {% if booking.specialRequests %}
+                    <div class="mt-3">
+                        <h4>Special Requests</h4>
+                        <p>{{ booking.specialRequests }}</p>
+                    </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <h4>Services</h4>
+                    {% if booking.flight %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5>Flight</h5>
+                                <p>Airlines: {{ booking.airlines }}</p>
+                                <p>Departure: {{ booking.departureTime|date('H:i') }}</p>
+                                <p>Return: {{ booking.backTime|date('H:i') }}</p>
+                                <p>Price: ${{ booking.flightPrice }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if booking.hotel %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5>Hotel</h5>
+                                <p>Name: {{ booking.hotelName }}</p>
+                                <p>Location: {{ booking.hotelLocation }}</p>
+                                <p>Price per night: ${{ booking.hotelPricePerNight }}</p>
+                                <p>Rating: {{ booking.hotelRating }}/5</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if booking.transport %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5>Transport</h5>
+                                <p>Type: {{ booking.transportType }}</p>
+                                <p>Price: ${{ booking.transportPrice }}</p>
+                                <p>Description: {{ booking.transportDescription }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if booking.conferenceLocation %}
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h5>Conference</h5>
+                                <p>Name: {{ booking.conferenceName }}</p>
+                                <p>Price per day: ${{ booking.conferencePricePerDay }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-3">
+                        <h5>Total Price: ${{ booking.priceTotal }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if booking.status != 'confirmed' and booking.status != 'not_confirmed' %}
+            <div class="d-flex justify-content-between">
+                <form method="post" action="{{ path('admin_booking_validate', {'id': booking.bookingId}) }}">
+                    <input type="hidden" name="action" value="reject">
+                    <button type="submit" class="btn btn-danger">Reject Booking</button>
+                </form>
+                
+                <form method="post" action="{{ path('admin_booking_validate', {'id': booking.bookingId}) }}">
+                    <input type="hidden" name="action" value="confirm">
+                    <button type="submit" class="btn btn-success">Confirm Booking</button>
+                </form>
+            </div>
+        {% endif %}
+        
+        <a href="{{ path('admin_bookings_list') }}" class="btn btn-secondary mt-3">Back to List</a>
+    </div>
+{% endblock %}

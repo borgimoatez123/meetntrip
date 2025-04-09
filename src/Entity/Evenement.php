@@ -2,14 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EvenementRepository;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
-#[ORM\Table(name: 'evenement')]
 class Evenement
 {
     #[ORM\Id]
@@ -20,62 +16,39 @@ class Evenement
     #[ORM\Column(type: 'string', length: 255)]
     private string $nom;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 100)]
     private string $type;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(name: 'nombreInvite', type: 'integer')]
     private int $nombreInvite;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'dateDebut', type: 'datetime')]
     private \DateTimeInterface $dateDebut;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'dateFin', type: 'datetime')]
     private \DateTimeInterface $dateFin;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $city;
+    #[ORM\Column(name: 'lieuEvenement', type: 'string', length: 255, nullable: true)]
+    private ?string $lieuEvenement = null;
 
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private float $budgetPrevu;
+    #[ORM\Column(name: 'budgetPrevu', type: 'float', nullable: true)]
+    private ?float $budgetPrevu = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $activities = null;
 
-    #[ORM\Column(type: 'string', nullable: true)]
+    #[ORM\Column(name: 'imagePath', type: 'string', length: 255, nullable: true)]
     private ?string $imagePath = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $validated = false;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $validated = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
-    private string $status;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'evenements')]
-    #[ORM\JoinColumn(name: 'userid', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
-
-    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'evenement')]
-    private Collection $bookings;
-
-    #[ORM\OneToMany(targetEntity: Demandesponsoring::class, mappedBy: 'evenement')]
-    private Collection $demandesponsorings;
-
-    #[ORM\OneToMany(targetEntity: Employer::class, mappedBy: 'evenement')]
-    private Collection $employers;
-
-    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'evenement')]
-    private Collection $paiements;
-
-    public function __construct()
-    {
-        $this->bookings = new ArrayCollection();
-        $this->demandesponsorings = new ArrayCollection();
-        $this->employers = new ArrayCollection();
-        $this->paiements = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -148,23 +121,23 @@ class Evenement
         return $this;
     }
 
-    public function getCity(): string
+    public function getLieuEvenement(): ?string
     {
-        return $this->city;
+        return $this->lieuEvenement;
     }
 
-    public function setCity(string $city): self
+    public function setLieuEvenement(?string $lieuEvenement): self
     {
-        $this->city = $city;
+        $this->lieuEvenement = $lieuEvenement;
         return $this;
     }
 
-    public function getBudgetPrevu(): float
+    public function getBudgetPrevu(): ?float
     {
         return $this->budgetPrevu;
     }
 
-    public function setBudgetPrevu(float $budgetPrevu): self
+    public function setBudgetPrevu(?float $budgetPrevu): self
     {
         $this->budgetPrevu = $budgetPrevu;
         return $this;
@@ -192,25 +165,14 @@ class Evenement
         return $this;
     }
 
-    public function isValidated(): bool
+    public function getValidated(): ?string
     {
         return $this->validated;
     }
 
-    public function setValidated(bool $validated): self
+    public function setValidated(?string $validated): self
     {
         $this->validated = $validated;
-        return $this;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
         return $this;
     }
 
@@ -222,118 +184,6 @@ class Evenement
     public function setUser(?User $user): self
     {
         $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Booking>
-     */
-    public function getBookings(): Collection
-    {
-        return $this->bookings;
-    }
-
-    public function addBooking(Booking $booking): self
-    {
-        if (!$this->bookings->contains($booking)) {
-            $this->bookings->add($booking);
-            $booking->setEvenement($this);
-        }
-        return $this;
-    }
-
-    public function removeBooking(Booking $booking): self
-    {
-        if ($this->bookings->removeElement($booking)) {
-            // Set the owning side to null (unless already changed)
-            if ($booking->getEvenement() === $this) {
-                $booking->setEvenement(null);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Demandesponsoring>
-     */
-    public function getDemandesponsorings(): Collection
-    {
-        return $this->demandesponsorings;
-    }
-
-    public function addDemandesponsoring(Demandesponsoring $demandesponsoring): self
-    {
-        if (!$this->demandesponsorings->contains($demandesponsoring)) {
-            $this->demandesponsorings->add($demandesponsoring);
-            $demandesponsoring->setEvenement($this);
-        }
-        return $this;
-    }
-
-    public function removeDemandesponsoring(Demandesponsoring $demandesponsoring): self
-    {
-        if ($this->demandesponsorings->removeElement($demandesponsoring)) {
-            // Set the owning side to null (unless already changed)
-            if ($demandesponsoring->getEvenement() === $this) {
-                $demandesponsoring->setEvenement(null);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Employer>
-     */
-    public function getEmployers(): Collection
-    {
-        return $this->employers;
-    }
-
-    public function addEmployer(Employer $employer): self
-    {
-        if (!$this->employers->contains($employer)) {
-            $this->employers->add($employer);
-            $employer->setEvenement($this);
-        }
-        return $this;
-    }
-
-    public function removeEmployer(Employer $employer): self
-    {
-        if ($this->employers->removeElement($employer)) {
-            // Set the owning side to null (unless already changed)
-            if ($employer->getEvenement() === $this) {
-                $employer->setEvenement(null);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Paiement>
-     */
-    public function getPaiements(): Collection
-    {
-        return $this->paiements;
-    }
-
-    public function addPaiement(Paiement $paiement): self
-    {
-        if (!$this->paiements->contains($paiement)) {
-            $this->paiements->add($paiement);
-            $paiement->setEvenement($this);
-        }
-        return $this;
-    }
-
-    public function removePaiement(Paiement $paiement): self
-    {
-        if ($this->paiements->removeElement($paiement)) {
-            // Set the owning side to null (unless already changed)
-            if ($paiement->getEvenement() === $this) {
-                $paiement->setEvenement(null);
-            }
-        }
         return $this;
     }
 }
