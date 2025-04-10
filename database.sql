@@ -4,41 +4,42 @@ CREATE DATABASE meetntrip;
 USE meetntrip;
 
 -- User Table
-CREATE TABLE User (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(255),
-    email VARCHAR(255) UNIQUE,
-    motDePasse VARCHAR(255),
-    telephone VARCHAR(20),
-    role VARCHAR(50), -- Admin, client, sponsor
-    compteValide BOOLEAN,
-    montant DECIMAL(10, 2) DEFAULT NULL,
-    image VARCHAR(255),
-    status VARCHAR(255) -- bloque, islogin
-);
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mot_de_passe` varchar(255) DEFAULT NULL,
+  `telephone` varchar(20) DEFAULT NULL,
+  `role` varchar(50) DEFAULT NULL,
+  `compte_valide` tinyint(1) DEFAULT NULL,
+  `montant` decimal(10,2) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Flights Table
-CREATE TABLE flights (
-    flight_id INT AUTO_INCREMENT PRIMARY KEY,
-    destination VARCHAR(100) NOT NULL,
-    airline VARCHAR(100),
-    departure_time TIME,
-    back_time TIME,
-    type VARCHAR(100),
-    aeroports TEXT,
-    price DECIMAL(10, 2)
-);
 
+CREATE TABLE `flights` (
+  `flight_id` int(11) NOT NULL,
+  `destination` varchar(255) NOT NULL,
+  `airline` varchar(255) DEFAULT NULL,
+  `departure_time` time DEFAULT NULL,
+  `back_time` time DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `aeroports` longtext DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Hotels Table
-CREATE TABLE hotels (
-    hotel_id INT AUTO_INCREMENT PRIMARY KEY,
-    city VARCHAR(100) NOT NULL,
-    location VARCHAR(100) NOT NULL,
-    name VARCHAR(100),
-    price_per_night DECIMAL(10, 2),
-    rating INT,
-    description TEXT
-);
+CREATE TABLE `hotels` (
+  `hotel_id` int(11) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `price_per_night` decimal(10,0) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `description` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Conference Location Table
 CREATE TABLE conference_location (
@@ -52,23 +53,21 @@ CREATE TABLE conference_location (
 );
 
 -- Event Table
-CREATE TABLE evenement (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(255) NOT NULL,
-    type VARCHAR(255) NOT NULL,
-    nombreInvite INT NOT NULL,
-    dateDebut DATETIME NOT NULL,
-    dateFin DATETIME NOT NULL,
-    description TEXT,
-    city VARCHAR(255) NOT NULL, -- liste de pays
-    budgetPrevu DECIMAL(10, 2) NOT NULL,
-    activities TEXT,
-    imagePath VARCHAR(255),
-    validated BOOLEAN NOT NULL DEFAULT FALSE,
-    status VARCHAR(50) NOT NULL, -- reserver or paier
-    userid INT,
-    FOREIGN KEY (userid) REFERENCES User(id)
-);
+CREATE TABLE `evenement` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `nombreInvite` int(11) NOT NULL,
+  `description` longtext DEFAULT NULL,
+  `activities` longtext DEFAULT NULL,
+  `lieuEvenement` varchar(255) DEFAULT NULL,
+  `imagePath` varchar(255) DEFAULT NULL,
+  `validated` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `dateDebut` datetime NOT NULL,
+  `dateFin` datetime NOT NULL,
+  `budgetPrevu` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Employer Table
 CREATE TABLE employer (
