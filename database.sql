@@ -70,18 +70,17 @@ CREATE TABLE `evenement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Employer Table
-CREATE TABLE employer (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    fullname VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
-    job VARCHAR(100),
-    cin_image VARCHAR(255),  -- Changed from 'image' to VARCHAR for file paths
-    passport_image VARCHAR(255),
-    nationality VARCHAR(100), -- Corrected spelling from 'nationally'
-    age INT,
-    id_evement INT,          -- Added column for foreign key
-    FOREIGN KEY (id_evement) REFERENCES evenement(id)
-);
+CREATE TABLE `employer` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `job` varchar(255) DEFAULT NULL,
+  `cin_image` varchar(255) DEFAULT NULL,
+  `passport_image` varchar(255) DEFAULT NULL,
+  `nationality` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `id_evement` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Transport Table
 CREATE TABLE transport (
@@ -91,59 +90,48 @@ CREATE TABLE transport (
     description TEXT
 );
 
--- Bookings Table
-CREATE TABLE bookings (
-    booking_id INT AUTO_INCREMENT PRIMARY KEY,
-    flight_id INT,
-    hotel_id INT,
-    transport_id INT,
-    conference_location_id INT,
-    user_name VARCHAR(255) NOT NULL,
-    booking_date DATE NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    airlines VARCHAR(255),
-    departure_time TIME,
-    back_time TIME,
-    flight_price DECIMAL(10, 2),
-    hotel_name VARCHAR(255),
-    hotel_location VARCHAR(255),
-    hotel_price_per_night DECIMAL(10, 2),
-    hotel_rating DECIMAL(3, 2),
-    conference_name VARCHAR(255),
-    conference_price_per_day DECIMAL(10, 2),
-    transport_type VARCHAR(100),
-    transport_price DECIMAL(10, 2),
-    transport_description TEXT,
-    priceTotal DECIMAL(10, 2),
-    name_evement VARCHAR(255),
-    numberof_invites INT,
-    start_evement DATETIME,
-    end_evement DATETIME,
-    Special_requests TEXT,
-    id_evement INT,
-    userid INT, -- Added missing userid column
-    FOREIGN KEY (flight_id) REFERENCES flights(flight_id),
-    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id),
-    FOREIGN KEY (transport_id) REFERENCES transport(transport_id),
-    FOREIGN KEY (conference_location_id) REFERENCES conference_location(location_id),
-    FOREIGN KEY (id_evement) REFERENCES evenement(id),
-    FOREIGN KEY (userid) REFERENCES User(id)
-);
-
+CREATE TABLE `bookings` (
+  `booking_id` int(11) NOT NULL,
+  `flight_id` int(11) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
+  `transport_id` int(11) DEFAULT NULL,
+  `conference_location_id` int(11) DEFAULT NULL,
+  `booking_date` date NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `airlines` varchar(255) DEFAULT NULL,
+  `departure_time` time DEFAULT NULL,
+  `back_time` time DEFAULT NULL,
+  `flight_price` decimal(10,2) DEFAULT NULL,
+  `hotel_name` varchar(255) DEFAULT NULL,
+  `hotel_location` varchar(255) DEFAULT NULL,
+  `hotel_price_per_night` decimal(10,2) DEFAULT NULL,
+  `hotel_rating` decimal(3,1) DEFAULT NULL,
+  `conference_name` varchar(255) DEFAULT NULL,
+  `conference_price_per_day` decimal(10,2) DEFAULT NULL,
+  `transport_type` varchar(255) DEFAULT NULL,
+  `transport_price` decimal(10,2) DEFAULT NULL,
+  `transport_description` longtext DEFAULT NULL,
+  `name_evement` varchar(255) DEFAULT NULL,
+  `numberof_invites` int(11) DEFAULT NULL,
+  `start_evement` datetime DEFAULT NULL,
+  `end_evement` datetime DEFAULT NULL,
+  `special_requests` longtext DEFAULT NULL,
+  `id_evement` int(11) DEFAULT NULL,
+  `userid` int(11) DEFAULT NULL,
+  `price_total` decimal(10,2) DEFAULT NULL,
+  `user_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Payment Table
-CREATE TABLE paiement (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom_titulaire VARCHAR(255) NOT NULL,
-    id_reservation INT NOT NULL,
-    id_evement INT NOT NULL,
-    numero_carte VARCHAR(16) NOT NULL,
-    date_expiration DATE NOT NULL,
-    cvv INT,
-    montant DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_evement) REFERENCES evenement(id),
-    FOREIGN KEY (id_reservation) REFERENCES bookings(booking_id)
-);
-
+CREATE TABLE `paiement` (
+  `id` int(11) NOT NULL,
+  `nom_titulaire` varchar(255) NOT NULL,
+  `id_reservation` int(11) DEFAULT NULL,
+  `id_evement` int(11) DEFAULT NULL,
+  `numero_carte` varchar(255) NOT NULL,
+  `date_expiration` date NOT NULL,
+  `cvv` int(11) DEFAULT NULL,
+  `montant` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Sponsorship Request Table
 CREATE TABLE DemandeSponsoring (
     id INT AUTO_INCREMENT PRIMARY KEY,
