@@ -133,31 +133,30 @@ CREATE TABLE `paiement` (
   `montant` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Sponsorship Request Table
-CREATE TABLE DemandeSponsoring (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    sponsor VARCHAR(255),
-    event_id INT,
-    statut VARCHAR(50),
-    justification TEXT,
-    FOREIGN KEY (event_id) REFERENCES evenement(id)
-);
 
+CREATE TABLE `demandesponsoring` (
+  `id` int(11) NOT NULL,
+  `sponsor` varchar(255) DEFAULT NULL,
+  `event_id` int(11) DEFAULT NULL,
+  `statut` varchar(255) DEFAULT NULL,
+  `justification` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- Response Table
-CREATE TABLE reponse (
-    id_reponse INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    commentaire VARCHAR(255) NOT NULL,
-    fullname VARCHAR(255) NOT NULL
-);
+CREATE TABLE `reponse` (
+  `id_reponse` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `commentaire` varchar(255) NOT NULL,
+  `fullname` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Complaint Table
-CREATE TABLE reclamation (
-    id_reclamation INT AUTO_INCREMENT PRIMARY KEY,
-    updated DATE NOT NULL,
-    commentaire VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    image VARCHAR(255) NOT NULL
-);
+CREATE TABLE `reclamation` (
+  `id_reclamation` int(11) NOT NULL,
+  `updated` date NOT NULL,
+  `commentaire` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 INSERT INTO flights (destination, airline, departure_time, back_time, type, aeroports, price)
 VALUES
 -- Paris (Charles de Gaulle)
